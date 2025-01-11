@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPD Count</title>
+    <script src="auth-check.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#ce000b',
+                    },
+                },
+            },
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-... your_hash ..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+    .hidden {
+    display: none;
+}
+.cursor-pointer {
+    cursor: pointer;
+}
+</style>
+
+</head>
+
+
+<body class="bg-gray-100">
+<div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-64 bg-gray-900 text-white transition-all duration-300">
+        <a href="home.html" class="p-4">
+            <h1 id="userName"  class="text-center text-2xl font-bold"></h1>
+        </a>
+        <nav class="mt-6">
+            <div class="relative">
+                <button onclick="toggleDropdown('Finance')" class="w-full flex items-center justify-between py-2 px-4 text-sm hover:bg-gray-700 transition-colors duration-200">
+              <span class="flex items-center">
+                <i class="fas fa-dollar-sign w-5 h-5 mr-2"></i>
+                <span class="sidebar-text">Finance</span>
+              </span>
+                    <i class="fas fa-chevron-down w-4 h-4"></i>
+                </button>
+                <div id="Finance-dropdown" class="hidden bg-gray-700 py-2">
+                    <!-- Dropdown items will be inserted here -->
+                </div>
+            </div>
+            <div class="relative">
+                <button onclick="toggleDropdown('Corporate')" class="w-full flex items-center justify-between py-2 px-4 text-sm hover:bg-gray-700 transition-colors duration-200">
+            <span class="flex items-center">
+              <i class="fas fa-briefcase w-5 h-5 mr-2"></i>
+              <span class="sidebar-text">Corporate</span>
+            </span>
+                    <i class="fas fa-chevron-down w-4 h-4"></i>
+                </button>
+                <div id="Corporate-dropdown" class="hidden bg-gray-700 py-2">
+                    <!-- Dropdown items will be inserted here -->
+                </div>
+            </div>
+        </nav>
+    </aside>
+    <main class="flex-1 overflow-y-auto bg-gray-100">
+        <!-- Main Content -->
+        <header class="bg-white shadow-sm sticky top-0 z-10">
+            <div class="max-w-8xl mx-auto  p-4 flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+
+                    <button onclick="toggleSidebar()" class="p-2 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300">
+                        <i class="fas fa-bars w-6 h-6"></i>
+                    </button>
+                    <h2 id="departmentTitle" class="text-2xl font-bold text-gray-900">Corporate Billing & Receipt</h2>
+                </div>
+
+                <div class="flex items-center space-x-4">
+
+                    <button onclick="logout()" class="flex items-center space-x-2 bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-md transition duration-200">
+                        <i class="fas fa-sign-out-alt w-4 h-4"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+        <div class="max-w-`8xl mx-auto py- sm:px-6 lg:px-0 ">
+            <div id="departmentContent" class="px-4 py-2 sm:px-0">
+
+                <!-- <div class="p-6 bg-white border-b border-gray-200">
+                    <div class="flex justify-between items-center">
+                        <h1 class="text-2xl font-bold text-gray-800">OPD Count</h1>
+                        <button onclick="window.location.href='home.html'" class="p-2 rounded-full hover:bg-gray-100">
+                            <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div> -->
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <div class="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
+
+                            <div class="flex-1">
+                                <label for="startYear" class="block text-sm font-medium text-gray-700">Start Year</label>
+                                <select id="startYear" name="startYear" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                                    <script>
+                                        const currentYear = new Date().getFullYear();
+                                        for (let year = currentYear; year >= 2020; year--) {
+                                            const nextYear = year + 1;
+                                            // Set the option's value to the starting year, but display the range
+                                            document.write(`<option value="${year}">${year}-${nextYear}</option>`);
+                                        }
+                                    </script>
+                                </select>
+                            </div>
+
+                            <div class="flex-1">
+                                <label for="clint" class="block text-sm font-medium text-gray-700">Client</label>
+                                <input type="text" id="clint" name="name" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <button id="resetButton" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2">
+                                Reset
+                            </button>
+                            <div class="space-x-2">
+                                <button id="searchButton" class="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                                    Search
+                                </button>
+                                <button id="downloadButton" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                                    <i class="fas fa-download inline-block w-4 h-4 mr-2"></i>
+                                    Download Data
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tableView" class="mt-6 rounded-md border">
+                        <table id="dataTable" class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left font-serif text-gray-500 uppercase tracking-wider">Field</th>
+                                <th id="monthHeader" class="px-6 py-3 text-center font-serif text-gray-500 uppercase tracking-wider"></th>
+                            </tr>
+                            </thead>
+                            <tbody id="tableBody" class="bg-white divide-y divide-gray-200">
+                            <!-- Transformed table rows will be inserted here -->
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div id="graphView" class="mt-6 rounded-md border p-4 hidden">
+                        <canvas id="chartCanvas"></canvas>
+                    </div>
+                    <div id="pagination" class="mt-4 flex justify-center items-center space-x-2 hidden">
+                        <button id="firstPage" class="px-4 py-2 bg-gray-800 text-white rounded-full hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                            First
+                        </button>
+                        <button id="prevPage" class="px-4 py-2 bg-gray-800 text-white rounded-full hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                            Previous
+                        </button>
+                        <span id="pageInfo" class="text-sm font-medium text-gray-700">
+                            Page 1 of 10
+                        </span>
+                        <button id="nextPage" class="px-4 py-2 bg-gray-800 text-white rounded-full hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                            Next
+                        </button>
+                        <button id="lastPage" class="px-4 py-2 bg-gray-800 text-white rounded-full hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                            Last
+                        </button>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+            </div>
+        </div>
+</div>
+</main>
+</div>
+
+<script>
+
+
+    let departmentData = [];
+    let currentPage = 1;
+    const itemsPerPage = 10;
+    let chart = null;
+
+    document.getElementById('firstPage').addEventListener('click', () => goToPage(1));
+    document.getElementById('lastPage').addEventListener('click', () => goToPage('last'));
+    document.getElementById('searchButton').addEventListener('click', fetchData);
+    document.getElementById('downloadButton').addEventListener('click', downloadData);
+    document.getElementById('prevPage').addEventListener('click', () => changePage(-1));
+    document.getElementById('nextPage').addEventListener('click', () => changePage(1));
+    document.getElementById('resetButton').addEventListener('click', resetForm);
+    document.getElementById('toggleViewButton').addEventListener('click', toggleView);
+
+    function resetForm() {
+        document.getElementById('startYear').value = '';
+        document.getElementById('clint').value = '';
+
+        departmentData = [];
+        currentPage = 1;
+        updateTable();
+        document.getElementById('downloadButton').disabled = true;
+        if (chart) {
+            chart.destroy();
+            chart = null;
+        }
+    }
+
+
+
+    async function fetchData() {
+        const searchButton = document.getElementById('searchButton');
+        searchButton.disabled = true;
+        searchButton.textContent = 'Searching...';
+
+        const apiUrl = 'https://prod-14.northeurope.logic.azure.com:443/workflows/a90dff7e119e4c0aa14741365b61a025/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=Ycf8FIsxL9Anx1T9yYMTlWbyfdZ5bb1afrR9syT4bDw';
+
+// Increment the endDate by 1 day
+
+        const requestBody = {
+            year: document.getElementById('startYear').value,
+            clint: document.getElementById('clint').value,
+        };
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody),
+            });
+
+            if (!response.ok) throw new Error('Network response was not ok');
+
+            departmentData = await response.json();
+            currentPage = 1;
+            updateTable();
+            updateGraph();
+            document.getElementById('downloadButton').disabled = false;
+        } catch (error) {
+            console.error('Failed to fetch data:', error);
+            alert('Failed to fetch data. Please try again.');
+        } finally {
+            searchButton.disabled = false;
+            searchButton.textContent = 'Search';
+        }
+    }
+
+    function goToPage(page) {
+        if (page === 'last') {
+            currentPage = Math.ceil(departmentData.length / itemsPerPage);
+        } else {
+            currentPage = page;
+        }
+        updateTable();
+    }
+    function updateTable() {
+        const tableBody = document.getElementById('tableBody');
+        const tableHeader = document.querySelector('#dataTable thead tr');
+        tableBody.innerHTML = '';
+        tableHeader.innerHTML = ''; // Clear existing headers
+
+        // Define headers
+        const headers = ['Client', 'Opening', 'Closing', 'Details'];
+        headers.forEach(headerText => {
+            const th = document.createElement('th');
+            th.className = 'px-6 py-4 whitespace-nowrap font-serif text-gray-700 text-center';
+            th.textContent = headerText;
+            tableHeader.appendChild(th);
+        });
+
+        // Populate rows grouped by client
+        [...new Set(departmentData.map(item => item.CLINT))].forEach(client => {
+            const clientData = departmentData.filter(item => item.CLINT === client);
+
+            // Main client row
+            const clientRow = tableBody.insertRow();
+            clientRow.className = 'cursor-pointer bg-gray-100';
+
+            // Client details
+            const clientNameCell = clientRow.insertCell();
+            clientNameCell.className = 'px-6 py-4 text-gray-700';
+            clientNameCell.textContent = client;
+
+            const openingCell = clientRow.insertCell();
+            openingCell.className = 'px-6 py-4 text-right text-gray-500 font-bold';
+            const openingBalance = clientData[0]?.OPENING_BALANCE || 0;
+            openingCell.textContent = openingBalance.toLocaleString();
+
+            const closingCell = clientRow.insertCell();
+            closingCell.className = 'px-6 py-4 text-right text-gray-500 font-bold';
+            const closingBalance = clientData.reduce((acc, curr) => acc + (curr.BILLING - curr.RECEIPT), openingBalance);
+            closingCell.textContent = closingBalance.toLocaleString();
+
+            const detailsCell = clientRow.insertCell();
+            detailsCell.className = 'px-6 py-4 text-center text-blue-500';
+            detailsCell.textContent = 'Show Details';
+
+            // Details row
+            const detailsRow = tableBody.insertRow();
+            const detailsCellContainer = detailsRow.insertCell();
+            detailsCellContainer.colSpan = headers.length;
+            detailsCellContainer.className = 'hidden';
+
+            const detailsTable = document.createElement('table');
+            detailsTable.className = 'w-full text-left border-collapse border border-gray-300';
+
+            const detailsHeaders = ['Month', 'Billing', 'Receipt'];
+            const detailsHead = document.createElement('thead');
+            const detailsHeaderRow = document.createElement('tr');
+            detailsHeaders.forEach(text => {
+                const th = document.createElement('th');
+                th.className = 'border border-gray-300 px-4 py-2 bg-gray-200';
+                th.textContent = text;
+                detailsHeaderRow.appendChild(th);
+            });
+            detailsHead.appendChild(detailsHeaderRow);
+            detailsTable.appendChild(detailsHead);
+
+            const detailsBody = document.createElement('tbody');
+            clientData.forEach(detail => {
+                const row = document.createElement('tr');
+                row.className = 'border-t border-gray-300';
+
+                // Extract month and year from the 'MONTH' field
+                const [monthStr, year] = detail['MONTH'].split('-');
+                const monthNumber = parseInt(monthStr, 10);
+
+                // Create a Date object using the extracted month and year
+                const date = new Date(year, monthNumber - 1); // Month is zero-based in JavaScript Date
+
+                // Get the full month name
+                const monthName = date.toLocaleString('default', { month: 'long' });
+
+                // Format as 'Month-YYYY'
+                const formattedMonth = `${monthName}-${year}`;
+
+                ['MONTH', 'BILLING', 'RECEIPT'].forEach(key => {
+                    const cell = document.createElement('td');
+                    cell.className = 'px-4 py-2';
+                    if (key === 'MONTH') {
+                        cell.textContent = formattedMonth;
+                    } else {
+                        cell.textContent = detail[key].toLocaleString();
+                    }
+                    row.appendChild(cell);
+                });
+                detailsBody.appendChild(row);
+            });
+
+            detailsTable.appendChild(detailsBody);
+            detailsCellContainer.appendChild(detailsTable);
+
+            // Toggle visibility
+            clientRow.addEventListener('click', () => {
+                detailsCellContainer.classList.toggle('hidden');
+            });
+        });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // function updateTotals() {
+    //     const totalADMISSIONS = departmentData.reduce((sum, item) => sum + (parseInt(item.ADMISSIONS) || 0), 0);
+    //     document.getElementById('totalADMISSIONS').textContent = totalADMISSIONS.toLocaleString();
+    // }
+
+    function changePage(direction) {
+        currentPage += direction;
+        updateTable();
+    }
+
+    function downloadData() {
+        const startDate = document.getElementById('startYear').value;
+
+        // Extract unique months and clients
+        const months = [...new Set(departmentData.map(item => item.MONTH))];
+        const clients = [...new Set(departmentData.map(item => item.CLINT))];
+
+        // Prepare the headers: 'Client / Date', 'Opening', 'Closing', then 'Month - Billing' and 'Month - Receipt'
+        const headers = ['Client / Date', 'Opening', 'Closing'];
+        months.forEach(month => {
+            headers.push(`${month} - Billing`, `${month} - Receipt`);
+        });
+
+        // Prepare rows grouped by client
+        const worksheetData = clients.map(client => {
+            // Find the opening balance for the client
+            const openingData = departmentData.find(item => item.CLINT === client);
+            const openingBalance = openingData ? openingData.OPENING_BALANCE || '-' : '-';
+
+            // Collect Billing and Receipt data for each month and calculate closing balance
+            let closingBalance = parseFloat(openingData?.OPENING_BALANCE || 0); // Start with opening balance
+            const monthData = months.flatMap(month => {
+                const data = departmentData.find(item => item.CLINT === client && item.MONTH === month);
+                const billing = data ? parseFloat(data.BILLING || 0) : 0;
+                const receipt = data ? parseFloat(data.RECEIPT || 0) : 0;
+
+                // Update closing balance
+                closingBalance += billing - receipt;
+
+                return [billing || '-', receipt || '-'];
+            });
+
+            return [client, openingBalance, closingBalance, ...monthData];
+        });
+
+        // Combine headers and data into a worksheet
+        const worksheet = XLSX.utils.aoa_to_sheet([
+            headers, // Header row
+            ...worksheetData, // Data rows
+        ]);
+
+        // Create a workbook and append the worksheet
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Corporate Receipt Data');
+
+        // Save the file with a dynamic filename
+        XLSX.writeFile(workbook, `corporate_receipt_${startDate}.xlsx`);
+    }
+
+
+
+
+    function toggleView() {
+        const tableView = document.getElementById('tableView');
+        const graphView = document.getElementById('graphView');
+        const pagination = document.getElementById('pagination');
+        const toggleButton = document.getElementById('toggleViewButton');
+
+        if (tableView.classList.contains('hidden')) {
+            tableView.classList.remove('hidden');
+            graphView.classList.add('hidden');
+            pagination.classList.remove('hidden');
+            toggleButton.textContent = 'Show Graph';
+        } else {
+            tableView.classList.add('hidden');
+            graphView.classList.remove('hidden');
+            pagination.classList.add('hidden');
+            toggleButton.textContent = 'Show Table';
+            updateGraph();
+        }
+    }
+
+    function updateGraph() {
+        const ctx = document.getElementById('chartCanvas').getContext('2d');
+
+        if (chart) {
+            chart.destroy();
+        }
+
+        if (departmentData.length === 0) {
+            return; // Don't create a chart if there's no data
+        }
+
+        // Group and sum the ADMISSIONS by SPECIALITY
+        const groupedData = departmentData.reduce((acc, item) => {
+            if (acc[item.SPECIALITY]) {
+                acc[item.SPECIALITY] += item.ADMISSIONS;
+            } else {
+                acc[item.SPECIALITY] = item.ADMISSIONS;
+            }
+            return acc;
+        }, {});
+
+        // Convert the grouped data into a sorted array
+        const sortedData = Object.entries(groupedData)
+            .map(([speciality, admissions]) => ({ SPECIALITY: speciality, ADMISSIONS: admissions }))
+            .sort((a, b) => b.ADMISSIONS - a.ADMISSIONS);
+
+        if (sortedData.length === 0) {
+            return; // Don't create a chart if there's no data after processing
+        }
+
+        chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: sortedData.map(item => item.SPECIALITY),
+                datasets: [{
+                    label: 'IPD Count',
+                    data: sortedData.map(item => item.ADMISSIONS),
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1,
+                    pointRadius: 7,
+                    pointHoverRadius: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Short Stay by Speciality'
+                    },
+                    tooltip: {
+                        enabled: false
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            autoSkip: false,
+                            maxRotation: 90,
+                            minRotation: 90
+                        }
+                    }
+                },
+                elements: {
+                    point: {
+                        pointStyle: 'circle'
+                    }
+                },
+                plugins: {
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'top',
+                        formatter: (value, context) => {
+                            return `${value}`;
+                        },
+                        font: {
+                            weight: 'bold'
+                        }
+                    }
+                }
+            },
+            plugins: [ChartDataLabels]
+        });
+    }
+
+</script>
+
+
+<script>
+
+    const departmentOptions = {
+        Finance: [
+            {
+                name: "Count",
+                icon: "fa-chart-bar", // General counting/statistics icon
+                submenu: [
+                    { name: "OPD Count", link: "finance-opd-count.html", icon: "fa-user-md" }, // Doctor/patient icon
+                    { name: "IPD Count", link: "finance-ipd-count.html", icon: "fa-procedures" }, // Bed icon
+                    { name: "EAR Count", link: "finance-ear-count.html", icon: "fa-users" }, // Group icon
+                ],
+            },
+            {
+                name: "Conversion to IPD",
+                icon: "fa-exchange-alt", // Conversion/movement icon
+                submenu: [
+                    { name: "Admission from OPD", link: "finance-admission-from-opd.html", icon: "fa-user-plus" }, // Admission icon
+                    { name: "Admission from EAR", link: "finance-admission-from-ear.html", icon: "fa-user-check" }, // Confirmation icon
+                ],
+            },
+            {
+                name: "Procedures",
+                icon: "fa-stethoscope", // Medical procedures icon
+                submenu: [
+                    { name: "Total FMH Procedures", link: "finance-total-procedures.html", icon: "fa-notes-medical" }, // Medical notes icon
+
+                ],
+            },
+
+            {
+                name: "Average Length Of Stay",
+                link: "finance-als.html",
+                icon: "fa-clock", // Time icon for length of stay
+            },
+            {
+                name: "Bed Occupancy",
+                link: "finance-bed-occupancy.html",
+                icon: "fa-clinic-medical", // Hospital bed icon
+            },
+            {
+                name: "Short Stay",
+                link: "finance-short-stay.html",
+                icon: "fa-user-clock", // Short stay/patient icon
+            },
+            {
+                name: "C-Section",
+                link: "c-section.html",
+                icon: "fa fa-baby",
+            },
+            {
+                name: "Normal Deliveries",
+                link: "normal-deliveries.html",
+                icon: "fa fa-hand-holding-heart",
+            },
+            {
+                name: "Mortality",
+                link: "mortality.html",
+                icon: "fa fa-heartbeat", // New icon class
+            },
+            {
+                "name": "Bed Detail",
+                "link": "bed-detail.html",
+                "icon": "fa fa-bed"
+            }
+        ],
+
+        Corporate: [
+            {
+                name: "Billing Sheet",
+                icon: "fa-stethoscope", // Medical procedures icon
+                submenu: [
+                    { name: "Ipd Revenue", link: "ipd-revenue.html", icon: "fa-notes-medical" }, // Medical notes icon
+                    { name: "Ear Revenue", link: "ear-revenue.html", icon: "fa-notes-medical" },
+                    { name: "Opd Revenue", link: "opd-revenue.html", icon: "fa-notes-medical" },
+
+                ],
+            },
+            {
+                name: "Corporate Billing & Receipt",
+                link: "finance-corporate-billing-receipt.html",
+                icon: "fa-file-invoice-dollar", // Billing/receipt icon
+            },
+
+        ],
+    };
+
+
+    function createDropdownItems(options, parentId = '') {
+        const fragment = document.createDocumentFragment();
+        options.forEach(option => {
+            if (option.submenu) {
+                const submenuButton = document.createElement('button');
+                submenuButton.className = 'w-full text-left flex items-center justify-between py-2 px-4 text-sm text-gray-300 hover:bg-gray-600 hover:text-white';
+                const submenuId = `${parentId}${option.name.replace(/\s+/g, '')}`;
+                submenuButton.onclick = () => toggleDropdown(submenuId);
+
+                const iconSpan = document.createElement('span');
+                iconSpan.className = 'flex items-center';
+                iconSpan.innerHTML = `<i class="fas ${option.icon} w-4 h-4 mr-2"></i><span class="sidebar-text">${option.name}</span>`;
+
+                const chevronIcon = document.createElement('i');
+                chevronIcon.className = 'fas fa-chevron-right w-4 h-4';
+
+                submenuButton.appendChild(iconSpan);
+                submenuButton.appendChild(chevronIcon);
+
+                const submenu = document.createElement('div');
+                submenu.id = `${submenuId}-dropdown`;
+                submenu.className = 'hidden bg-gray-800 py-2 pl-6';
+
+                submenu.appendChild(createDropdownItems(option.submenu, submenuId));
+
+                fragment.appendChild(submenuButton);
+                fragment.appendChild(submenu);
+            } else {
+                const link = document.createElement('a');
+                link.href = option.link;
+                link.className = 'block py-2 px-4 text-sm text-gray-300 hover:bg-gray-600 hover:text-white flex items-center';
+                link.innerHTML = `<i class="fas ${option.icon} w-4 h-4 mr-2"></i><span class="sidebar-text">${option.name}</span>`;
+                fragment.appendChild(link);
+            }
+        });
+        return fragment;
+    }
+
+    for (const [department, options] of Object.entries(departmentOptions)) {
+        const dropdown = document.getElementById(`${department}-dropdown`);
+        dropdown.appendChild(createDropdownItems(options, department));
+    }
+
+    function toggleDropdown(id) {
+        const dropdown = document.getElementById(`${id}-dropdown`);
+        if (dropdown) {
+            const isHidden = dropdown.classList.contains('hidden');
+
+            // Close all dropdowns at the same level
+            dropdown.parentElement.querySelectorAll(':scope > [id$="-dropdown"]').forEach(el => el.classList.add('hidden'));
+
+            // Toggle the clicked dropdown
+            if (isHidden) {
+                dropdown.classList.remove('hidden');
+            }
+
+            // Rotate the chevron icon
+            const button = document.querySelector(`button[onclick="toggleDropdown('${id}')"]`);
+            const chevron = button.querySelector('.fa-chevron-right');
+            if (chevron) {
+                chevron.style.transform = isHidden ? 'rotate(90deg)' : 'rotate(0deg)';
+            }
+        }
+    }
+
+    function showDepartmentContent(department) {
+        const departmentTitle = document.getElementById('departmentTitle');
+        const departmentContent = document.getElementById('departmentContent');
+
+        departmentTitle.textContent = department.replace(/([A-Z])/g, ' $1').trim();
+        departmentContent.innerHTML = `<h3 class="text-xl font-semibold mb-4">Select an option from the ${department} menu to view details.</h3>`;
+    }
+
+    function logout() {
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('fullName');
+        window.location.href = 'index.html';
+    }
+
+    function getInitials(name) {
+        return name.split(' ').map(word => word[0].toUpperCase()).join('');
+    }
+
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const sidebarTexts = document.querySelectorAll('.sidebar-text');
+        const userNameElement = document.getElementById('userName');
+        const fullName = localStorage.getItem('fullName');
+
+        if (sidebar.classList.contains('w-64')) {
+            sidebar.classList.remove('w-64');
+            sidebar.classList.add('w-20');
+            sidebarTexts.forEach(text => text.classList.add('hidden'));
+            if (fullName) {
+                userNameElement.textContent = getInitials(fullName);
+            }
+        } else {
+            sidebar.classList.remove('w-20');
+            sidebar.classList.add('w-64');
+            sidebarTexts.forEach(text => text.classList.remove('hidden'));
+            if (fullName) {
+                userNameElement.textContent = fullName;
+            }
+        }
+    }
+
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!event.target.closest('.relative')) {
+            document.querySelectorAll('[id$="-dropdown"]').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.fa-chevron-right').forEach(el => el.style.transform = 'rotate(0deg)');
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const userNameElement = document.getElementById('userName');
+        const fullName = localStorage.getItem('fullName');
+        if (fullName) {
+            userNameElement.textContent = `${fullName}`;
+        }
+    });
+</script>
+</body>
+</html>

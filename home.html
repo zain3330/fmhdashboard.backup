@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Department Directory Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-... your_hash ..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="auth-check.js"></script>
+</head>
+<body class="bg-gray-100">
+  <div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-64 bg-gray-900 text-white transition-all duration-300">
+      <a href="home.html" class="p-4">
+        <h1 id="userName"  class="text-center text-2xl font-bold"></h1>
+      </a>
+      <nav class="mt-6">
+        <div class="relative">
+          <button onclick="toggleDropdown('Finance')" class="w-full flex items-center justify-between py-2 px-4 text-sm hover:bg-gray-700 transition-colors duration-200">
+            <span class="flex items-center">
+              <i class="fas fa-dollar-sign w-5 h-5 mr-2"></i>
+              <span class="sidebar-text">Finance</span>
+            </span>
+            <i class="fas fa-chevron-down w-4 h-4"></i>
+          </button>
+          <div id="Finance-dropdown" class="hidden bg-gray-700 py-2">
+            <!-- Dropdown items will be inserted here -->
+          </div>
+        </div>
+        <div class="relative">
+          <button onclick="toggleDropdown('Corporate')" class="w-full flex items-center justify-between py-2 px-4 text-sm hover:bg-gray-700 transition-colors duration-200">
+            <span class="flex items-center">
+              <i class="fas fa-briefcase w-5 h-5 mr-2"></i>
+              <span class="sidebar-text">Corporate</span>
+            </span>
+            <i class="fas fa-chevron-down w-4 h-4"></i>
+          </button>
+          <div id="Corporate-dropdown" class="hidden bg-gray-700 py-2">
+            <!-- Dropdown items will be inserted here -->
+          </div>
+        </div>
+
+      </nav>
+    </aside>
+    <main class="flex-1 overflow-y-auto bg-gray-100">
+    <!-- Main Content -->
+    <header class="bg-white shadow-sm sticky top-0 z-10">
+      <div class="max-w-10xl mx-auto p-4 flex justify-between  items-center">
+        <!-- Left Section -->
+        <div class="flex items-center space-x-4">
+          <!-- Sidebar Toggle Button -->
+          <button onclick="toggleSidebar()" class="p-2 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300">
+            <i class="fas fa-bars w-6 h-6"></i>
+          </button>
+          <!-- Hidden Title for Larger Screens -->
+          <!-- <h2 id="departmentTitle" class="text-base font-bold text-gray-900" style="white-space: nowrap;">
+            OPD Count
+          </h2> -->
+        </div>
+    
+        <!-- Right Section -->
+        <div class="flex items-center space-x-4">
+          <!-- Logout Button -->
+          <button 
+            onclick="logout()" 
+            class="flex items-center space-x-2 bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-md transition duration-200 text-sm">
+            <i class="fas fa-sign-out-alt w-4 h-4"></i>
+            <span>Logout</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+      <div class="max-w-10xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div id="departmentContent" class="px-4 py-6 sm:px-0">
+          <!-- Department content will be dynamically inserted here -->
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+
+    const departmentOptions = {
+      Finance: [
+        {
+          name: "Count",
+          icon: "fa-chart-bar", // General counting/statistics icon
+          submenu: [
+            { name: "OPD Count", link: "finance-opd-count.html", icon: "fa-user-md" }, // Doctor/patient icon
+            { name: "IPD Count", link: "finance-ipd-count.html", icon: "fa-procedures" }, // Bed icon
+            { name: "EAR Count", link: "finance-ear-count.html", icon: "fa-users" }, // Group icon
+          ],
+        },
+        {
+          name: "Conversion to IPD",
+          icon: "fa-exchange-alt", // Conversion/movement icon
+          submenu: [
+            { name: "Admission from OPD", link: "finance-admission-from-opd.html", icon: "fa-user-plus" }, // Admission icon
+            { name: "Admission from EAR", link: "finance-admission-from-ear.html", icon: "fa-user-check" }, // Confirmation icon
+          ],
+        },
+        {
+          name: "Procedures",
+          icon: "fa-stethoscope", // Medical procedures icon
+          submenu: [
+            { name: "Total FMH Procedures", link: "finance-total-procedures.html", icon: "fa-notes-medical" }, // Medical notes icon
+
+          ],
+        },
+
+        {
+          name: "Average Length Of Stay",
+          link: "finance-als.html",
+          icon: "fa-clock", // Time icon for length of stay
+        },
+        {
+          name: "Bed Occupancy",
+          link: "finance-bed-occupancy.html",
+          icon: "fa-clinic-medical", // Hospital bed icon
+        },
+        {
+          name: "Short Stay",
+          link: "finance-short-stay.html",
+          icon: "fa-user-clock", // Short stay/patient icon
+        },
+        {
+          name: "C-Section",
+          link: "c-section.html",
+          icon: "fa fa-baby",
+        },
+        {
+          name: "Normal Deliveries",
+          link: "normal-deliveries.html",
+          icon: "fa fa-hand-holding-heart",
+        },
+        {
+          name: "Mortality",
+          link: "mortality.html",
+          icon: "fa fa-heartbeat", // New icon class
+        },
+        {
+          "name": "Bed Detail",
+          "link": "bed-detail.html",
+          "icon": "fa fa-bed"
+        }
+
+
+      ],
+
+      Corporate: [
+        {
+          name: "Billing Sheet",
+          icon: "fa-stethoscope", // Medical procedures icon
+          submenu: [
+            { name: "Ipd Revenue", link: "ipd-revenue.html", icon: "fa-notes-medical" }, // Medical notes icon
+            { name: "Ear Revenue", link: "ear-revenue.html", icon: "fa-notes-medical" },
+            { name: "Opd Revenue", link: "opd-revenue.html", icon: "fa-notes-medical" },
+
+          ],
+        },
+        {
+          name: "Corporate Billing & Receipt",
+          link: "finance-corporate-billing-receipt.html",
+          icon: "fa-file-invoice-dollar", // Billing/receipt icon
+        },
+      ],
+
+    };
+
+
+    function createDropdownItems(options, parentId = '') {
+      const fragment = document.createDocumentFragment();
+      options.forEach(option => {
+        if (option.submenu) {
+          const submenuButton = document.createElement('button');
+          submenuButton.className = 'w-full text-left flex items-center justify-between py-2 px-4 text-sm text-gray-300 hover:bg-gray-600 hover:text-white';
+          const submenuId = `${parentId}${option.name.replace(/\s+/g, '')}`;
+          submenuButton.onclick = () => toggleDropdown(submenuId);
+          
+          const iconSpan = document.createElement('span');
+          iconSpan.className = 'flex items-center';
+          iconSpan.innerHTML = `<i class="fas ${option.icon} w-4 h-4 mr-2"></i><span class="sidebar-text">${option.name}</span>`;
+          
+          const chevronIcon = document.createElement('i');
+          chevronIcon.className = 'fas fa-chevron-right w-4 h-4';
+          
+          submenuButton.appendChild(iconSpan);
+          submenuButton.appendChild(chevronIcon);
+          
+          const submenu = document.createElement('div');
+          submenu.id = `${submenuId}-dropdown`;
+          submenu.className = 'hidden bg-gray-800 py-2 pl-6';
+          
+          submenu.appendChild(createDropdownItems(option.submenu, submenuId));
+
+          fragment.appendChild(submenuButton);
+          fragment.appendChild(submenu);
+        } else {
+          const link = document.createElement('a');
+          link.href = option.link;
+          link.className = 'block py-2 px-4 text-sm text-gray-300 hover:bg-gray-600 hover:text-white flex items-center';
+          link.innerHTML = `<i class="fas ${option.icon} w-4 h-4 mr-2"></i><span class="sidebar-text">${option.name}</span>`;
+          fragment.appendChild(link);
+        }
+      });
+      return fragment;
+    }
+
+    for (const [department, options] of Object.entries(departmentOptions)) {
+      const dropdown = document.getElementById(`${department}-dropdown`);
+      dropdown.appendChild(createDropdownItems(options, department));
+    }
+
+    function toggleDropdown(id) {
+      const dropdown = document.getElementById(`${id}-dropdown`);
+      if (dropdown) {
+        const isHidden = dropdown.classList.contains('hidden');
+        
+        // Close all dropdowns at the same level
+        dropdown.parentElement.querySelectorAll(':scope > [id$="-dropdown"]').forEach(el => el.classList.add('hidden'));
+        
+        // Toggle the clicked dropdown
+        if (isHidden) {
+          dropdown.classList.remove('hidden');
+        }
+        
+        // Rotate the chevron icon
+        const button = document.querySelector(`button[onclick="toggleDropdown('${id}')"]`);
+        const chevron = button.querySelector('.fa-chevron-right');
+        if (chevron) {
+          chevron.style.transform = isHidden ? 'rotate(90deg)' : 'rotate(0deg)';
+        }
+      }
+    }
+
+    function showDepartmentContent(department) {
+      const departmentTitle = document.getElementById('departmentTitle');
+      const departmentContent = document.getElementById('departmentContent');
+
+      departmentTitle.textContent = department.replace(/([A-Z])/g, ' $1').trim();
+      departmentContent.innerHTML = `<h3 class="text-xl font-semibold mb-4">Select an option from the ${department} menu to view details.</h3>`;
+    }
+
+    function logout() {
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('fullName');
+      window.location.href = 'index.html';
+    }
+
+    function getInitials(name) {
+      return name.split(' ').map(word => word[0].toUpperCase()).join('');
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const sidebarTexts = document.querySelectorAll('.sidebar-text');
+      const userNameElement = document.getElementById('userName');
+      const fullName = localStorage.getItem('fullName');
+
+      if (sidebar.classList.contains('w-64')) {
+        sidebar.classList.remove('w-64');
+        sidebar.classList.add('w-20');
+        sidebarTexts.forEach(text => text.classList.add('hidden'));
+        if (fullName) {
+          userNameElement.textContent = getInitials(fullName);
+        }
+      } else {
+        sidebar.classList.remove('w-20');
+        sidebar.classList.add('w-64');
+        sidebarTexts.forEach(text => text.classList.remove('hidden'));
+        if (fullName) {
+          userNameElement.textContent = fullName;
+        }
+      }
+    }
+
+
+
+    document.addEventListener('click', function(event) {
+      if (!event.target.closest('.relative')) {
+        document.querySelectorAll('[id$="-dropdown"]').forEach(el => el.classList.add('hidden'));
+        document.querySelectorAll('.fa-chevron-right').forEach(el => el.style.transform = 'rotate(0deg)');
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const userNameElement = document.getElementById('userName');
+      const fullName = localStorage.getItem('fullName');
+      if (fullName) {
+        userNameElement.textContent = `${fullName}`;
+      }
+    });
+
+
+  </script>
+</body>
+</html>
