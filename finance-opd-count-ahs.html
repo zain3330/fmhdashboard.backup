@@ -10,7 +10,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
     <script src="department-options.js"></script>
-
     <script>
         tailwind.config = {
             theme: {
@@ -23,14 +22,14 @@
         }
     </script>
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-... your_hash ..." crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <style>
-        .sidebar-transition {
-            transition: width 0.3s ease-in-out;
-        }
-    </style>
+<style>
+    .sidebar-transition {
+        transition: width 0.3s ease-in-out;
+    }
+</style>
 </head>
 
-
+  
 <body class="bg-gray-100">
     <div class="flex h-screen overflow-hidden">
       <!-- Sidebar -->
@@ -76,7 +75,7 @@
             <button onclick="toggleSidebar()" class="p-2 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300">
                 <i class="fas fa-bars w-6 h-6"></i>
               </button>
-              <h2 id="departmentTitle" class="text-2xl font-bold text-gray-900">C-Section</h2>
+              <h2 id="departmentTitle" class="text-2xl font-bold text-gray-900">OPD Count - Allied Health Specialties</h2>
               </div>
 
             <div class="flex items-center space-x-4">
@@ -103,6 +102,21 @@
                         <div class="space-y-4">
                             <div class="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
                                 <div class="flex-1">
+                                    <label for="type" class="block text-sm font-medium text-gray-700">Hospital Type</label>
+                                    <select id="type" name="hospitalType" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                                        <option value="M" selected>Hospital</option>
+                                        <option value="D">Dental</option>
+                                    </select>
+                                </div>
+                                <div class="flex-1">
+                                    <label for="hospital" class="block text-sm font-medium text-gray-700">Hospital</label>
+                                    <select id="hospital" name="hospital" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                                        <option value="ALL" selected>All</option>
+                                        <option value="FMH">FMH Hospital</option>
+                                        <option value="HH">Hijaz Hospital</option>
+                                    </select>
+                                </div>
+                                <div class="flex-1">
                                     <label for="startDate" class="block text-sm font-medium text-gray-700">Start Date</label>
                                     <input type="date" id="startDate" name="startDate" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
                                 </div>
@@ -115,10 +129,9 @@
                                     <input type="text" id="name" name="name" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
                                 </div>
                                 <div class="flex-1">
-                                    <label for="department" class="block text-sm font-medium text-gray-700">Doctor Department</label>
-                                    <input type="text" id="department" name="department" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                                    <label for="departemnt" class="block text-sm font-medium text-gray-700">Department</label>
+                                    <input type="text" id="departemnt" name="name" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
                                 </div>
-
                             </div>
                             <div class="flex justify-between items-center">
                                 <button id="resetButton" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2">
@@ -133,9 +146,9 @@
 
                                         Download Data
                                     </button>
-<!--                                    <button id="toggleViewButton" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2">-->
-<!--                                        Show Graph-->
-<!--                                    </button>-->
+                                    <button id="toggleViewButton" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2">
+                                        Show Graph
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -143,12 +156,10 @@
                             <table id="dataTable" class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
                                     <tr>
-                                        <th class="px-6 py-3 text-left  font-serif text-gray-500 uppercase tracking-wider">Doctor</th>
-                                        <th class="px-6 py-3 text-left  font-serif text-gray-500 uppercase tracking-wider">Department </th>
-
-                                        <th class="px-6 py-3 text-right  font-serif text-gray-500 uppercase tracking-wider">NO OF PROCEDURES</th>
-
-
+                                        <th class="px-6 py-3  text-left  font-serif text-gray-500 uppercase tracking-wider">Doctor Name</th>
+                                        <th class="px-6 py-3  text-left  font-serif text-gray-500 uppercase tracking-wider">Speciality</th>
+                                        <th class="px-6 py-3    font-serif text-gray-500 uppercase tracking-wider">Private OPD</th>
+                                        <th class="px-6 py-3 text-right  font-serif text-gray-500 uppercase tracking-wider">General OPD</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tableBody" class="bg-white divide-y divide-gray-200">
@@ -157,8 +168,8 @@
                                 <tfoot id="tableFoot" class="bg-gray-50 hidden">
                                     <tr>
                                         <th class="px-6 py-3 text-left   font-serif text-gray-500 uppercase tracking-wider" colspan="2">Total</th>
-                                        <th id="totalPvtOpd" class="px-6 py-3   text-right  font-serif text-gray-500 uppercase tracking-wider"></th>
-
+                                        <th id="totalPvtOpd" class="px-6 py-3 text-right    font-serif text-gray-500 uppercase tracking-wider"></th>
+                                        <th id="totalGenOpd" class="px-6 py-3 text-right    font-serif text-gray-500 uppercase tracking-wider"></th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -196,14 +207,14 @@
     <script>
 
 
-
         function resetForm() {
+            document.getElementById('type').value = 'M';
+            document.getElementById('hospital').value = 'ALL';
             document.getElementById('startDate').value = '';
             document.getElementById('endDate').value = '';
             document.getElementById('name').value = '';
-            document.getElementById('department').value = '';
-
-
+            document.getElementById('departemnt').value = '';
+            
             departmentData = [];
             currentPage = 1;
             updateTable();
@@ -214,14 +225,20 @@
             }
         }
 
+        const today = new Date();
+        const lastThreeDays = new Date(today);
+        lastThreeDays.setDate(today.getDate() - 3);
+        const maxDate = lastThreeDays.toISOString().split('T')[0];
+        document.getElementById('startDate').setAttribute('max', maxDate);
+        document.getElementById('endDate').setAttribute('max', maxDate);
 
         async function fetchData() {
             const searchButton = document.getElementById('searchButton');
             searchButton.disabled = true;
             searchButton.textContent = 'Search in Progress, Please Wait...';
 
-            const apiUrl = 'https://prod-13.northeurope.logic.azure.com:443/workflows/55990fc11a434b90b7d4093faf062157/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=BjUxLG418U52P1Lvxn8LQwQZIny7J7UlOMpe9wrBSMA';
-
+            const apiUrl = 'https://prod-09.northeurope.logic.azure.com:443/workflows/542af575ede54c52a888318d7cdb5522/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=aQvshYkfy1btUGO-OtOyIZkIGko4SecgJ2fgOvWqk-4';
+            const hospitalValue = document.getElementById('hospital').value;
             let endDate = document.getElementById('endDate').value;
             const endDateObj = new Date(endDate);
             endDateObj.setDate(endDateObj.getDate() + 1);
@@ -230,7 +247,10 @@
                 startDate: document.getElementById('startDate').value,
                 endDate: endDate,
                 name: document.getElementById('name').value,
-                department: document.getElementById('department').value,
+                type: document.getElementById('type').value,
+                department: document.getElementById('departemnt').value,
+                hos1: (hospitalValue === 'ALL' || hospitalValue === 'FMH') ? 'FMH' : '',
+                hos2: (hospitalValue === 'ALL' || hospitalValue === 'HH') ? 'HH' : '',
             };
 
             try {
@@ -285,18 +305,15 @@
             pageData.forEach(item => {
                 const row = tableBody.insertRow();
                 row.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap  font-serif text-gray-500">${item.NAME}</td>
-                    <td class="px-6 py-4 whitespace-nowrap   font-serif text-gray-500">${item.DEPARTMENT}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right  font-serif text-gray-500">${(parseInt(item.NO_OF_PROCEDURES) || 0).toLocaleString()}</td>
-
-
-
+                    <td class="px-6 py-4 whitespace-nowrap  font-serif text-gray-500">${item.DOCTOR_NAME}</td>
+                    <td class="px-6 py-4 whitespace-nowrap   font-serif text-gray-500">${item.SPECIALITY}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right  font-serif text-gray-500">${(parseInt(item.PVT_OPD) || 0).toLocaleString()}</td>
+                    <td class="px-6 py-4 whitespace-nowrap  text-right  font-serif text-gray-500">${(parseInt(item.GEN_OPD) || 0).toLocaleString()}</td>
                 `;
             });
 
             updatePagination();
             updateTotals();
-
         }
 
         function updatePagination() {
@@ -315,11 +332,11 @@
         }
 
         function updateTotals() {
-            const totalPvtOpd = departmentData.reduce((sum, item) => sum + (parseInt(item.NO_OF_PROCEDURES) || 0), 0);
-
+            const totalPvtOpd = departmentData.reduce((sum, item) => sum + (parseInt(item.PVT_OPD) || 0), 0);
+            const totalGenOpd = departmentData.reduce((sum, item) => sum + (parseInt(item.GEN_OPD) || 0), 0);
 
             document.getElementById('totalPvtOpd').textContent = totalPvtOpd.toLocaleString();
-
+            document.getElementById('totalGenOpd').textContent = totalGenOpd.toLocaleString();
         }
 
         function changePage(direction) {
@@ -331,20 +348,21 @@
             const startDate = document.getElementById('startDate').value;
             const endDate = document.getElementById('endDate').value;
             const worksheetData = departmentData.map(item => [
-                item.NAME,
-                item.DEPARTMENT,
-                item.NO_OF_PROCEDURES,
+                item.DOCTOR_NAME,
+                item.SPECIALITY,
+                item.PVT_OPD,
+                item.GEN_OPD,
             ]);
 
             const worksheet = XLSX.utils.aoa_to_sheet([
-                ['Doctor Name', 'Department', 'No of Procedures'],
+                ['Doctor Name', 'Speciality', 'Private OPD', 'General OPD'],
                 ...worksheetData,
             ]);
 
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, 'Department Data');
 
-            XLSX.writeFile(workbook, `c_section_${startDate}_to_${endDate}.xlsx`);
+            XLSX.writeFile(workbook, `opd_${startDate}_to_${endDate}.xlsx`);
         }
 
 
@@ -384,7 +402,7 @@
                 if (!acc[item.SPECIALITY]) {
                     acc[item.SPECIALITY] = 0;
                 }
-                acc[item.SPECIALITY] += (parseInt(item.Total_EAR) || 0) ;
+                acc[item.SPECIALITY] += (parseInt(item.PVT_OPD) || 0) + (parseInt(item.GEN_OPD) || 0);
                 return acc;
             }, {});
 
@@ -405,7 +423,7 @@
                         datasets: [
                             {
                                 label: 'Total OPD',
-                                data: sortedData.map(item => item.Total_EAR), // Y-axis data for Total OPD
+                                data: sortedData.map(item => item.TOTAL_OPD), // Y-axis data for Total OPD
                                 borderColor: 'rgb(75, 192, 192)',
                                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                                 borderWidth: 2,

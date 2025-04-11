@@ -9,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
     <script src="department-options.js"></script>
     <script>
         tailwind.config = {
@@ -27,9 +28,11 @@
             overflow-x: auto;
             max-width: 100%;
         }
-        .sidebar-transition {
-            transition: width 0.3s ease-in-out;
-        }
+
+         .sidebar-transition {
+             transition: width 0.3s ease-in-out;
+         }
+
         </style>
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-... your_hash ..." crossorigin="anonymous" referrerpolicy="no-referrer" />
 
@@ -81,7 +84,7 @@
             <button onclick="toggleSidebar()" class="p-2 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300">
                 <i class="fas fa-bars w-6 h-6"></i>
               </button>
-              <h2 id="departmentTitle" class="text-2xl font-bold text-gray-900">Total Procedures</h2>
+              <h2 id="departmentTitle" class="text-2xl font-bold text-gray-900">EAR Discharge Type</h2>
               </div>
 
             <div class="flex items-center space-x-4">
@@ -108,7 +111,6 @@
                     <div class="space-y-4">
                         <div class="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
 
-
                             <div class="flex-1">
                                 <label for="startDate" class="block text-sm font-medium text-gray-700">Start Date</label>
                                 <input type="date" id="startDate" name="startDate" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
@@ -118,26 +120,13 @@
                                 <input type="date" id="endDate" name="endDate" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
                             </div>
                             <div class="flex-1">
-                                <label for="cpt_id" class="block text-sm font-medium text-gray-700">Cpt id</label>
-                                <input type="text" id="cpt_id" name="cpt_id" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-                            </div>
-                            <div class="flex-1">
-                                <label for="departemnt" class="block text-sm font-medium text-gray-700">Cpt Description</label>
-                                <input type="text" id="departemnt" name="departemnt" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-                            </div>
-                            <div class="flex-1">
-                                <label for="name" class="block text-sm font-medium text-gray-700">Doctor Name</label>
-                                <input type="text" id="name" name="name" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-                            </div>
-                            <div class="flex-1">
-                                <label for="depart" class="block text-sm font-medium text-gray-700">Department</label>
-                                <input type="text" id="depart" name="depart" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-                            </div>
-                            <div class="flex-1">
-                                <label for="type" class="block text-sm font-medium text-gray-700">Patient Type</label>
-                                <input type="text" id="type" name="type" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                                <label for="mrno" class="block text-sm font-medium text-gray-700">Patient MRNO</label>
+                                <input type="text" id="mrno" name="mrno" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
                             </div>
                         </div>
+
+
+
                         <div class="flex justify-between items-center">
                             <button id="resetButton" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2">
                                 Reset
@@ -157,31 +146,31 @@
                         </div>
                     </div>
                     <div id="tableView" class="mt-6 rounded-md border">
-                        <div class="overflow-auto">
+
                             <table id="dataTable" class="min-w-full divide-y divide-gray-200 table-auto">
                                 <thead class="bg-gray-50">
                                 <tr>
 
-                                    <th class="px-4 py-2 text-left font-serif text-gray-500 uppercase tracking-wider">Name</th>
-                                    <th class="px-4 py-2 text-left font-serif text-gray-500 uppercase tracking-wider">Department</th>
-                                    <th class="px-4 py-2 text-left font-serif text-gray-500 uppercase tracking-wider">Cpt id</th>
-                                    <th class="px-4 py-2 text-left font-serif text-gray-500 uppercase tracking-wider">Cpt Desc</th>
-                                    <th class="px-4 py-2 text-left font-serif text-gray-500 uppercase tracking-wider">Patient Type</th>
-                                    <th class="px-4 py-2 text-left font-serif text-gray-500 uppercase tracking-wider">No of Proc</th>
-                                    <th class="px-4 py-2 text-left font-serif text-gray-500 uppercase tracking-wider">Major Minor</th>
+                                    <th class="px-4 py-2 text-sm text-left font-serif text-gray-500 uppercase tracking-wider">PATIENT MRNO</th>
+                                    <th class="px-4 py-2 text-sm text-left font-serif text-gray-500 uppercase tracking-wider">PATIENT NAME</th>
+                                    <th class="px-4 py-2 text-sm text-left font-serif text-gray-500 uppercase tracking-wider">DISCHARGE DATE</th>
+                                    <th class="px-4 py-2 text-sm text-left font-serif text-gray-500 uppercase tracking-wider">DISCHARGE NO</th>
+                                    <th class="px-4 py-2 text-sm text-left font-serif text-gray-500 uppercase tracking-wider">DISCHARGE TYPE</th>
+
+                                    <th class="px-4 py-2 text-sm text-left font-serif text-gray-500 uppercase tracking-wider">DOCTOR NAME</th>
                                 </tr>
                                 </thead>
                                 <tbody id="tableBody" class="bg-white divide-y divide-gray-200">
                                 <!-- Table rows will be inserted here -->
                                 </tbody>
-                                <tfoot id="tableFoot" class="bg-gray-50 hidden">
-                                <tr>
-                                    <th class="px-4 py-2 text-left font-serif text-gray-500 uppercase tracking-wider" colspan="5">Total</th>
-                                    <th id="totalADMISSIONS" class="px-4 py-2 text-left font-serif text-gray-500 uppercase tracking-wider"></th>
-                                </tr>
-                                </tfoot>
+<!--                                <tfoot id="tableFoot" class="bg-gray-50 hidden">-->
+<!--                                <tr>-->
+<!--                                    <th class="px-4 py-2 text-left font-serif text-gray-500 uppercase tracking-wider" colspan="5">Total</th>-->
+<!--                                    <th id="totalADMISSIONS" class="px-4 py-2 text-left font-serif text-gray-500 uppercase tracking-wider"></th>-->
+<!--                                </tr>-->
+<!--                                </tfoot>-->
                             </table>
-                        </div>
+
 
                     </div>
                     <div id="graphView" class="mt-6 rounded-md border p-4 hidden">
@@ -206,23 +195,20 @@
                     </div>
                 </div>
     </div>
+
 </div>
 </div>
 </main>
 </div>
 
     <script>
-
+      
 
 
         function resetForm() {
             document.getElementById('startDate').value = '';
             document.getElementById('endDate').value = '';
-            document.getElementById('cpt_id').value = '';
-            document.getElementById('departemnt').value = '';
-            document.getElementById('name').value = '';
-            document.getElementById('depart').value = '';
-            document.getElementById('type').value = '';
+            document.getElementById('mrno').value = '';
             departmentData = [];
             currentPage = 1;
             updateTable();
@@ -239,13 +225,39 @@
         // const maxDate = lastThreeDays.toISOString().split('T')[0];
         // document.getElementById('startDate').setAttribute('max', maxDate);
         // document.getElementById('endDate').setAttribute('max', maxDate);
+        function showAlert(title, message) {
+            const modal = document.getElementById("alertModal")
+            const titleElement = document.getElementById("alertTitle")
+            const messageElement = document.getElementById("alertMessage")
+
+            titleElement.textContent = title
+            messageElement.textContent = message
+            modal.classList.remove("hidden")
+        }
+
+        function hideAlert() {
+            const modal = document.getElementById("alertModal")
+            modal.classList.add("hidden")
+        }
+
+        // Make sure this event listener is properly set up
+        document.getElementById("closeModal").addEventListener("click", hideAlert)
+
 
         async function fetchData() {
             const searchButton = document.getElementById('searchButton');
+            const startDateInput = document.getElementById('startDate');
+            const endDateInput = document.getElementById('endDate');
+
+            // Validate input fields
+            if (!startDateInput.value || !endDateInput.value) {
+                showAlert("Input Error", "Please enter both the start and end dates.")
+                return // Exit the function if validation fails
+            }
             searchButton.disabled = true;
             searchButton.textContent = 'Search in Progress, Please Wait...';
 
-            const apiUrl = 'https://prod-07.northeurope.logic.azure.com:443/workflows/a132e1c13a6a416683dacfd05158c499/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=QGZ3R0EIEfqZlJXHc5nMHTdmC1xxKXsKniaU1UDs4uQ';
+            const apiUrl = 'https://prod-08.northeurope.logic.azure.com:443/workflows/a16e34f7d9264128a31163509cb73c4d/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=BAPqzgRCrjBEVRabgacnjin2GTuYIHZFJ4fCJzwqyYo';
             let endDate = document.getElementById('endDate').value;
 // Increment the endDate by 1 day
             const endDateObj = new Date(endDate);
@@ -254,14 +266,10 @@
             const requestBody = {
                 startDate: document.getElementById('startDate').value,
                 endDate:endDate,
-                cpt_id: document.getElementById('cpt_id').value,
-                cpt_desc: document.getElementById('departemnt').value,
-             name:   document.getElementById('name').value ,
-               department: document.getElementById('depart').value ,
-                type: document.getElementById('type').value ,
+               mrno: document.getElementById('mrno').value ,
 
             };
-    
+
             try {
                 const response = await fetch(apiUrl, {
                     method: 'POST',
@@ -280,7 +288,7 @@
                 document.getElementById('downloadButton').disabled = false;
             } catch (error) {
                 console.error('Failed to fetch data:', error);
-                alert('Failed to fetch data. Please try again.');
+                showAlert("Error", "Failed to fetch data. Please try again.")
             } finally {
                 searchButton.disabled = false;
                 searchButton.textContent = 'Search';
@@ -298,35 +306,46 @@
 
         function updateTable() {
             const tableBody = document.getElementById('tableBody');
-            const tableFoot = document.getElementById('tableFoot');
+            // const tableFoot = document.getElementById('tableFoot');
             tableBody.innerHTML = '';
 
             const startIndex = (currentPage - 1) * itemsPerPage;
             const endIndex = startIndex + itemsPerPage;
             const pageData = departmentData.slice(startIndex, endIndex);
 
-            if (pageData.length === 0) {
-                tableFoot.classList.add('hidden');
-            } else {
-                tableFoot.classList.remove('hidden');
-            }
-
+            // if (pageData.length === 0) {
+            //     tableFoot.classList.add('hidden');
+            // } else {
+            //     tableFoot.classList.remove('hidden');
+            // }
             pageData.forEach(item => {
                 const row = tableBody.insertRow();
-                row.innerHTML = `
 
-           <td class="px-6 py-4  text-sm font-serif text-gray-500">${item.NAME}</td>
-              <td class="px-6 py-4  text-sm font-serif text-gray-500">${item.DEPARTMENT}</td>
-        <td class="px-6 py-4 whitespace-nowrap  font-serif text-gray-500">${item.CPT_ID}</td>
-        <td class="px-6 py-4  text-sm text-left font-serif text-gray-500">${item.CPT_DESC}</td>
-            <td class="px-6 py-4  text-sm text-left font-serif text-gray-500">${item.TYPE}</td>
-        <td class="px-6 py-4 whitespace-nowrap  text-left font-serif text-gray-500">${(parseInt(item.NO_OF_PROCEDURES) || 0).toLocaleString()}</td>
-        <td class="px-6 py-4 whitespace-nowrap  text-left font-serif text-gray-500">${item.MAJOR_MINOR ? item.MAJOR_MINOR : 'Others'}</td>
+                // Convert the date to a more user-friendly format if NOTES_DATE exists
+                let formattedDate = 'N/A';
+                if (item.DISCHARGE_DATE) {
+                    const enteredDate = new Date(item.DISCHARGE_DATE);
+                    formattedDate = enteredDate.toLocaleString('en-US', {
+                        dateStyle: 'medium',
+                        timeStyle: 'short'
+                    });
+                }
+
+                row.innerHTML = `
+        <td class="px-6 py-4 whitespace-nowrap font-serif text-gray-500">${item.MRNO || 'N/A'}</td>
+        <td class="px-6 py-4 whitespace-nowrap font-serif text-gray-500">${item.PATIENT_NAME || 'N/A'}</td>
+        <td class="px-6 py-4 whitespace-nowrap text-left font-serif text-gray-500">${formattedDate}</td>
+        <td class="px-6 py-4 whitespace-nowrap text-left font-serif text-gray-500">${item.DISCHARGE_NO}</td>
+                <td class="px-6 py-4 text-left font-serif text-gray-500">${item.DISCHARGE_TYPE || 'N/A'}</td>
+        <td class="px-6 py-4 text-sm text-left font-serif text-gray-500">${item.DOCTOR_NAME || 'N/A'}</td>
     `;
             });
 
+
+
+
             updatePagination();
-            updateTotals();
+            // updateTotals();
         }
 
         function updatePagination() {
@@ -344,10 +363,10 @@
             }
         }
 
-        function updateTotals() {
-            const totalADMISSIONS = departmentData.reduce((sum, item) => sum + (parseInt(item.NO_OF_PROCEDURES) || 0), 0);
-            document.getElementById('totalADMISSIONS').textContent = totalADMISSIONS.toLocaleString();
-        }
+        // function updateTotals() {
+        //     const totalADMISSIONS = departmentData.reduce((sum, item) => sum + (parseInt(item.NO_OF_PROCEDURES) || 0), 0);
+        //     document.getElementById('totalADMISSIONS').textContent = totalADMISSIONS.toLocaleString();
+        // }
 
         function changePage(direction) {
             currentPage += direction;
@@ -358,18 +377,24 @@
         function downloadData() {
             const startDate = document.getElementById('startDate').value;
             const endDate = document.getElementById('endDate').value;
-            const worksheetData = departmentData.map(item => [
-                item.MONTH,
-                item.NAME,
-                item.DEPARTMENT,
-                item.CPT_ID,
-                item.CPT_DESC,
-                item.TYPE,
-                item.NO_OF_PROCEDURES,
-                item.MAJOR_MINOR,
-            ]);
-            const worksheet = XLSX.utils.aoa_to_sheet([
-                ['Month','Name' ,'Department' , 'Cap Id', 'Cpt Desc','Patient Type' ,'No of Procedures' ,'Major Minor'],
+            const worksheetData = departmentData.map(item => {
+
+                const dateTime = item.DISCHARGE_DATE.split('T');
+                const date = dateTime[0];
+                const time = dateTime[1].split('.')[0]; // Removing any milliseconds if present
+                return [
+                    item.MRNO,
+                    item.PATIENT_NAME,
+                    `${date} ${time}`, // Combining date and time
+                    item.DISCHARGE_NO,
+                    item.DISCHARGE_TYPE,
+                    item.DOCTOR_NAME,
+
+                ];
+            });
+
+                const worksheet = XLSX.utils.aoa_to_sheet([
+                ['Patient MRNO','Patient Name' ,'Discharge Date' , 'Discharge No', 'Discharge Type','Doctor Name'  ],
                 ...worksheetData, // Data
             ]);
 
@@ -378,9 +403,9 @@
             XLSX.utils.book_append_sheet(workbook, worksheet, 'Department Data');
 
             // Save the file as .xlsx
-            XLSX.writeFile(workbook,  `total_procedures_${startDate}_to_${endDate}.xlsx`);
+            XLSX.writeFile(workbook,  `ear_discharge_type_${startDate}_to_${endDate}.xlsx`);
         }
-        
+
         function toggleView() {
             const tableView = document.getElementById('tableView');
             const graphView = document.getElementById('graphView');
@@ -530,33 +555,42 @@
         }
 
 
-        // Global variables
-        let isOpen = true;
-        let currentPage = 1;
-        const itemsPerPage = 10; // Added missing variable
-        let departmentData = [];
-        let chart = null;
 
-        // DOM Elements
-        const sidebar = document.getElementById('sidebar');
-        const userName = document.getElementById('userName');
-        const userInitials = document.getElementById('userInitials');
 
-        // Sidebar functionality
-        function createDropdownItems(options, parentId = '') {
-            const fragment = document.createDocumentFragment();
 
-            options.forEach(option => {
-                if (option.submenu) {
-                    // Create submenu container
-                    const submenuContainer = document.createElement('div');
-                    submenuContainer.className = 'relative';
+    </script>
 
-                    // Create submenu button
-                    const submenuButton = document.createElement('button');
-                    submenuButton.className = 'w-full flex items-center justify-between py-2 px-4 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-200';
-                    submenuButton.setAttribute('data-submenu', `${parentId}-${option.name.replace(/\s+/g, '-').toLowerCase()}`);
-                    submenuButton.innerHTML = `
+        
+  <script>
+
+
+      // Global variables
+      let isOpen = true;
+      let currentPage = 1;
+      const itemsPerPage = 10; // Added missing variable
+      let departmentData = [];
+      let chart = null;
+
+      // DOM Elements
+      const sidebar = document.getElementById('sidebar');
+      const userName = document.getElementById('userName');
+      const userInitials = document.getElementById('userInitials');
+
+      // Sidebar functionality
+      function createDropdownItems(options, parentId = '') {
+          const fragment = document.createDocumentFragment();
+
+          options.forEach(option => {
+              if (option.submenu) {
+                  // Create submenu container
+                  const submenuContainer = document.createElement('div');
+                  submenuContainer.className = 'relative';
+
+                  // Create submenu button
+                  const submenuButton = document.createElement('button');
+                  submenuButton.className = 'w-full flex items-center justify-between py-2 px-4 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-200';
+                  submenuButton.setAttribute('data-submenu', `${parentId}-${option.name.replace(/\s+/g, '-').toLowerCase()}`);
+                  submenuButton.innerHTML = `
                 <span class="flex items-center">
                     <i class="fas ${option.icon} w-4 h-4 mr-2"></i>
                     <span class="sidebar-text">${option.name}</span>
@@ -564,172 +598,200 @@
                 <i class="fas fa-chevron-right w-4 h-4 transition-transform duration-200"></i>
             `;
 
-                    // Create submenu content
-                    const submenuContent = document.createElement('div');
-                    submenuContent.id = `${parentId}-${option.name.replace(/\s+/g, '-').toLowerCase()}-submenu`;
-                    submenuContent.className = 'hidden pl-4 bg-gray-800/50';
+                  // Create submenu content
+                  const submenuContent = document.createElement('div');
+                  submenuContent.id = `${parentId}-${option.name.replace(/\s+/g, '-').toLowerCase()}-submenu`;
+                  submenuContent.className = 'hidden pl-4 bg-gray-800/50';
 
-                    submenuContent.appendChild(createDropdownItems(option.submenu, submenuContent.id));
+                  submenuContent.appendChild(createDropdownItems(option.submenu, submenuContent.id));
 
-                    submenuButton.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        submenuContent.classList.toggle('hidden');
-                        submenuButton.querySelector('.fa-chevron-right').classList.toggle('rotate-90');
-                        saveSidebarState();
-                    });
+                  submenuButton.addEventListener('click', (e) => {
+                      e.stopPropagation();
+                      submenuContent.classList.toggle('hidden');
+                      submenuButton.querySelector('.fa-chevron-right').classList.toggle('rotate-90');
+                      saveSidebarState();
+                  });
 
-                    submenuContainer.appendChild(submenuButton);
-                    submenuContainer.appendChild(submenuContent);
-                    fragment.appendChild(submenuContainer);
-                } else {
-                    const link = document.createElement('a');
-                    link.href = option.link;
-                    link.className = 'block py-2 px-4 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-200';
-                    link.innerHTML = `
+                  submenuContainer.appendChild(submenuButton);
+                  submenuContainer.appendChild(submenuContent);
+                  fragment.appendChild(submenuContainer);
+              } else {
+                  const link = document.createElement('a');
+                  link.href = option.link;
+                  link.className = 'block py-2 px-4 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-200';
+                  link.innerHTML = `
                 <span class="flex items-center">
                     <i class="fas ${option.icon} w-4 h-4 mr-2"></i>
                     <span class="sidebar-text">${option.name}</span>
                 </span>
             `;
-                    fragment.appendChild(link);
-                }
-            });
+                  fragment.appendChild(link);
+              }
+          });
 
-            return fragment;
-        }
+          return fragment;
+      }
 
-        function toggleSidebar() {
-            isOpen = !isOpen;
-            sidebar.classList.toggle('w-64');
-            sidebar.classList.toggle('w-24');
+      function toggleSidebar() {
+          isOpen = !isOpen;
+          sidebar.classList.toggle('w-64');
+          sidebar.classList.toggle('w-24');
 
-            document.querySelectorAll('.sidebar-text').forEach(el => {
-                el.classList.toggle('hidden');
-            });
+          document.querySelectorAll('.sidebar-text').forEach(el => {
+              el.classList.toggle('hidden');
+          });
 
-            if (isOpen) {
-                userName.classList.remove('hidden');
-                userInitials.classList.add('hidden');
-            } else {
-                userName.classList.add('hidden');
-                userInitials.classList.remove('hidden');
-            }
+          if (isOpen) {
+              userName.classList.remove('hidden');
+              userInitials.classList.add('hidden');
+          } else {
+              userName.classList.add('hidden');
+              userInitials.classList.remove('hidden');
+          }
 
-            saveSidebarState();
-        }
+          saveSidebarState();
+      }
 
-        // Remove the document-level click event listener that was closing dropdowns
-        // Instead, modify the toggleDropdown function to handle the state properly
+      // Remove the document-level click event listener that was closing dropdowns
+      // Instead, modify the toggleDropdown function to handle the state properly
 
-        function toggleDropdown(id) {
-            const dropdown = document.getElementById(`${id}-dropdown`);
-            const chevron = document.querySelector(`button[onclick="toggleDropdown('${id}')"] .fa-chevron-down`);
+      function toggleDropdown(id) {
+          const dropdown = document.getElementById(`${id}-dropdown`);
+          const chevron = document.querySelector(`button[onclick="toggleDropdown('${id}')"] .fa-chevron-down`);
 
-            if (dropdown) {
-                dropdown.classList.toggle('hidden');
-                if (chevron) chevron.classList.toggle('rotate-180');
-                saveSidebarState();
-            }
-        }
+          if (dropdown) {
+              dropdown.classList.toggle('hidden');
+              if (chevron) chevron.classList.toggle('rotate-180');
+              saveSidebarState();
+          }
+      }
 
-        // Update the DOMContentLoaded event listener to remove the document click handler
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize event listeners
-            document.getElementById('firstPage')?.addEventListener('click', () => goToPage(1));
-            document.getElementById('lastPage')?.addEventListener('click', () => goToPage('last'));
-            document.getElementById('searchButton')?.addEventListener('click', fetchData);
-            document.getElementById('downloadButton')?.addEventListener('click', downloadData);
-            document.getElementById('prevPage')?.addEventListener('click', () => changePage(-1));
-            document.getElementById('nextPage')?.addEventListener('click', () => changePage(1));
-            document.getElementById('resetButton')?.addEventListener('click', resetForm);
-            document.getElementById('toggleViewButton')?.addEventListener('click', toggleView);
-            document.getElementById('closeModal')?.addEventListener('click', hideAlert);
+      // Update the DOMContentLoaded event listener to remove the document click handler
+      document.addEventListener('DOMContentLoaded', function() {
+          // Initialize event listeners
+          document.getElementById('firstPage')?.addEventListener('click', () => goToPage(1));
+          document.getElementById('lastPage')?.addEventListener('click', () => goToPage('last'));
+          document.getElementById('searchButton')?.addEventListener('click', fetchData);
+          document.getElementById('downloadButton')?.addEventListener('click', downloadData);
+          document.getElementById('prevPage')?.addEventListener('click', () => changePage(-1));
+          document.getElementById('nextPage')?.addEventListener('click', () => changePage(1));
+          document.getElementById('resetButton')?.addEventListener('click', resetForm);
+          document.getElementById('toggleViewButton')?.addEventListener('click', toggleView);
+          document.getElementById('closeModal')?.addEventListener('click', hideAlert);
 
-            // Initialize sidebar
-            const fullName = localStorage.getItem('fullName');
-            if (fullName) {
-                userName.textContent = fullName;
-                userInitials.textContent = getInitials(fullName);
-            }
+          // Initialize sidebar
+          const fullName = localStorage.getItem('fullName');
+          if (fullName) {
+              userName.textContent = fullName;
+              userInitials.textContent = getInitials(fullName);
+          }
 
-            // Initialize dropdowns once
-            for (const [department, options] of Object.entries(departmentOptions)) {
-                const dropdown = document.getElementById(`${department}-dropdown`);
-                if (dropdown) {
-                    dropdown.appendChild(createDropdownItems(options, department));
-                }
-            }
+          // Initialize dropdowns once
+          for (const [department, options] of Object.entries(departmentOptions)) {
+              const dropdown = document.getElementById(`${department}-dropdown`);
+              if (dropdown) {
+                  dropdown.appendChild(createDropdownItems(options, department));
+              }
+          }
 
-            // Load sidebar state
-            loadSidebarState();
+          // Load sidebar state
+          loadSidebarState();
 
-            // Highlight current page
-            const currentPath = window.location.pathname.split('/').pop();
-            const currentLink = document.querySelector(`a[href="${currentPath}"]`);
-            if (currentLink) {
-                currentLink.classList.add('bg-gray-700', 'text-white');
-            }
+          // Highlight current page
+          const currentPath = window.location.pathname.split('/').pop();
+          const currentLink = document.querySelector(`a[href="${currentPath}"]`);
+          if (currentLink) {
+              currentLink.classList.add('bg-gray-700', 'text-white');
+          }
 
-            // Add CSS for submenu animations
-            const style = document.createElement('style');
-            style.textContent = `
+          // Add CSS for submenu animations
+          const style = document.createElement('style');
+          style.textContent = `
         .rotate-90 { transform: rotate(90deg); }
         [data-submenu] .fa-chevron-right { transition: transform 0.2s ease-in-out; }
     `;
-            document.head.appendChild(style);
+          document.head.appendChild(style);
 
-            // Add click event listener to the sidebar for toggling
-            sidebar.addEventListener('click', function(event) {
-                // Only toggle if clicking on the sidebar itself, not its children
-                if (event.target === sidebar) {
-                    toggleSidebar();
-                }
-            });
-        });
+          // Add click event listener to the sidebar for toggling
+          sidebar.addEventListener('click', function(event) {
+              // Only toggle if clicking on the sidebar itself, not its children
+              if (event.target === sidebar) {
+                  toggleSidebar();
+              }
+          });
+      });
 
-        function saveSidebarState() {
-            const openMenus = Array.from(document.querySelectorAll('[id$="-dropdown"], [id$="-submenu"]'))
-                .filter(el => !el.classList.contains('hidden'))
-                .map(el => el.id);
+      function saveSidebarState() {
+          const openMenus = Array.from(document.querySelectorAll('[id$="-dropdown"], [id$="-submenu"]'))
+              .filter(el => !el.classList.contains('hidden'))
+              .map(el => el.id);
 
-            localStorage.setItem('sidebarState', JSON.stringify({
-                isOpen,
-                openMenus
-            }));
-        }
+          localStorage.setItem('sidebarState', JSON.stringify({
+              isOpen,
+              openMenus
+          }));
+      }
 
-        function loadSidebarState() {
-            const savedState = localStorage.getItem('sidebarState');
-            if (savedState) {
-                const { isOpen: savedIsOpen, openMenus } = JSON.parse(savedState);
-                if (!savedIsOpen) toggleSidebar();
+      function loadSidebarState() {
+          const savedState = localStorage.getItem('sidebarState');
+          if (savedState) {
+              const { isOpen: savedIsOpen, openMenus } = JSON.parse(savedState);
+              if (!savedIsOpen) toggleSidebar();
 
-                openMenus.forEach(id => {
-                    const element = document.getElementById(id);
-                    if (element) {
-                        element.classList.remove('hidden');
-                        const button = document.querySelector(`[data-submenu="${id.replace('-submenu', '')}"]`);
-                        if (button) {
-                            button.querySelector('.fa-chevron-right').classList.add('rotate-90');
-                        }
-                    }
-                });
-            }
-        }
+              openMenus.forEach(id => {
+                  const element = document.getElementById(id);
+                  if (element) {
+                      element.classList.remove('hidden');
+                      const button = document.querySelector(`[data-submenu="${id.replace('-submenu', '')}"]`);
+                      if (button) {
+                          button.querySelector('.fa-chevron-right').classList.add('rotate-90');
+                      }
+                  }
+              });
+          }
+      }
 
-        function getInitials(name) {
-            return name.split(' ').map(n => n[0]).join('').toUpperCase();
-        }
-        function logout() {
-            localStorage.removeItem('isLoggedIn');
-            window.location.href = 'index.html';
-        }
+      function getInitials(name) {
+          return name.split(' ').map(n => n[0]).join('').toUpperCase();
+      }
+      function logout() {
+          localStorage.removeItem('isLoggedIn');
+          window.location.href = 'index.html';
+      }
 
 
 
-    </script>
+      // Make sure this event listener is set up
+      document.addEventListener("DOMContentLoaded", () => {
+          // ... existing DOMContentLoaded logic ...
 
-        
+          // Add this line to ensure the closeModal button is properly set up
+          document.getElementById("closeModal").addEventListener("click", hideAlert)
+      })
+
+  </script>
+
 
 </body>
+
+<div id="alertModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden flex items-center justify-center">
+    <div class="relative p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div class="mt-3 text-center">
+            <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+                <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+            </div>
+            <h3 class="text-lg leading-6 font-medium text-gray-900 mt-5" id="alertTitle">Error</h3>
+            <div class="mt-2 px-7 py-3">
+                <p class="text-sm text-gray-500" id="alertMessage"></p>
+            </div>
+            <div class="items-center px-4 py-3">
+                <button id="closeModal" class="px-4 py-2 bg-red-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 </html>

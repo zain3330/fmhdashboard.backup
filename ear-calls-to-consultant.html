@@ -22,15 +22,23 @@
             },
         }
     </script>
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-... your_hash ..." crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        .sidebar-transition {
-            transition: width 0.3s ease-in-out;
+        /* Add this style to the head section */
+        .table-container {
+            overflow-x: auto;
+            max-width: 100%;
         }
-    </style>
+
+         .sidebar-transition {
+             transition: width 0.3s ease-in-out;
+         }
+
+        </style>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-... your_hash ..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 </head>
 
-
+  
 <body class="bg-gray-100">
     <div class="flex h-screen overflow-hidden">
       <!-- Sidebar -->
@@ -72,15 +80,15 @@
       <header class="bg-white shadow-sm sticky top-0 z-10">
         <div class="max-w-8xl mx-auto  p-4 flex justify-between items-center">
             <div class="flex items-center space-x-4">
-
+          
             <button onclick="toggleSidebar()" class="p-2 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300">
                 <i class="fas fa-bars w-6 h-6"></i>
               </button>
-              <h2 id="departmentTitle" class="text-2xl font-bold text-gray-900">C-Section</h2>
+              <h2 id="departmentTitle" class="text-2xl font-bold text-gray-900">EAR Calls to Consultant</h2>
               </div>
 
             <div class="flex items-center space-x-4">
-
+             
                 <button onclick="logout()" class="flex items-center space-x-2 bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-md transition duration-200">
                   <i class="fas fa-sign-out-alt w-4 h-4"></i>
                   <span>Logout</span>
@@ -90,7 +98,7 @@
       </header>
       <div class="max-w-`8xl mx-auto py- sm:px-6 lg:px-0 ">
         <div id="departmentContent" class="px-4 py-2 sm:px-0">
-
+          
                     <!-- <div class="p-6 bg-white border-b border-gray-200">
                         <div class="flex justify-between items-center">
                             <h1 class="text-2xl font-bold text-gray-800">OPD Count</h1>
@@ -99,111 +107,105 @@
                             </button>
                         </div>
                     </div> -->
-                    <div class="p-6">
-                        <div class="space-y-4">
-                            <div class="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
-                                <div class="flex-1">
-                                    <label for="startDate" class="block text-sm font-medium text-gray-700">Start Date</label>
-                                    <input type="date" id="startDate" name="startDate" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-                                </div>
-                                <div class="flex-1">
-                                    <label for="endDate" class="block text-sm font-medium text-gray-700">End Date</label>
-                                    <input type="date" id="endDate" name="endDate" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-                                </div>
-                                <div class="flex-1">
-                                    <label for="name" class="block text-sm font-medium text-gray-700">Doctor Name</label>
-                                    <input type="text" id="name" name="name" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-                                </div>
-                                <div class="flex-1">
-                                    <label for="department" class="block text-sm font-medium text-gray-700">Doctor Department</label>
-                                    <input type="text" id="department" name="department" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-                                </div>
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <div class="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
 
+                            <div class="flex-1">
+                                <label for="startDate" class="block text-sm font-medium text-gray-700">Start Date</label>
+                                <input type="date" id="startDate" name="startDate" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
                             </div>
-                            <div class="flex justify-between items-center">
-                                <button id="resetButton" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2">
-                                    Reset
+                            <div class="flex-1">
+                                <label for="endDate" class="block text-sm font-medium text-gray-700">End Date</label>
+                                <input type="date" id="endDate" name="endDate" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                            </div>
+                            <div class="flex-1">
+                                <label for="depart" class="block text-sm font-medium text-gray-700">Department</label>
+                                <input type="text" id="depart" name="depart" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <button id="resetButton" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2">
+                                Reset
+                            </button>
+                            <div class="space-x-2">
+                                <button id="searchButton" class="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                                    Search
                                 </button>
-                                <div class="space-x-2">
-                                    <button id="searchButton" class="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed">
-                                        Search
-                                    </button>
-                                    <button id="downloadButton" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
-                                        <i class="fas fa-download inline-block w-4 h-4 mr-2"></i>
-
-                                        Download Data
-                                    </button>
-<!--                                    <button id="toggleViewButton" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2">-->
-<!--                                        Show Graph-->
-<!--                                    </button>-->
-                                </div>
+                                <button id="downloadButton" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                                    <i class="fas fa-download inline-block w-4 h-4 mr-2"></i>
+                                    Download Data
+                                </button>
+<!--                                <button id="toggleViewButton" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2">-->
+<!--                                    Show Graph-->
+<!--                                </button>-->
                             </div>
-                        </div>
-                        <div id="tableView" class="mt-6 rounded-md border">
-                            <table id="dataTable" class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th class="px-6 py-3 text-left  font-serif text-gray-500 uppercase tracking-wider">Doctor</th>
-                                        <th class="px-6 py-3 text-left  font-serif text-gray-500 uppercase tracking-wider">Department </th>
-
-                                        <th class="px-6 py-3 text-right  font-serif text-gray-500 uppercase tracking-wider">NO OF PROCEDURES</th>
-
-
-                                    </tr>
-                                </thead>
-                                <tbody id="tableBody" class="bg-white divide-y divide-gray-200">
-                                    <!-- Table rows will be inserted here -->
-                                </tbody>
-                                <tfoot id="tableFoot" class="bg-gray-50 hidden">
-                                    <tr>
-                                        <th class="px-6 py-3 text-left   font-serif text-gray-500 uppercase tracking-wider" colspan="2">Total</th>
-                                        <th id="totalPvtOpd" class="px-6 py-3   text-right  font-serif text-gray-500 uppercase tracking-wider"></th>
-
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                        <div id="graphView" class="mt-6 rounded-md border p-4 hidden">
-                            <canvas id="chartCanvas"></canvas>
-                        </div>
-                        <div id="pagination" class="mt-4 flex justify-center items-center space-x-2 hidden">
-                            <button id="firstPage"
-                                    class="px-4 py-2 bg-gray-800 text-white rounded-full hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed">
-                              First
-                            </button>
-                            <button id="prevPage"
-                                    class="px-4 py-2 bg-gray-800 text-white rounded-full hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed">
-                              Previous
-                            </button>
-                            <span id="pageInfo" class="text-sm font-medium text-gray-700">
-                              Page 1 of 10
-                            </span>
-                            <button id="nextPage"
-                                    class="px-4 py-2 bg-gray-800 text-white rounded-full hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed">
-                              Next
-                            </button>
-                            <button id="lastPage"
-                                    class="px-4 py-2 bg-gray-800 text-white rounded-full hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed">
-                              Last
-                            </button>
                         </div>
                     </div>
+                    <div id="tableView" class="mt-6 rounded-md border">
+
+                            <table id="dataTable" class="min-w-full divide-y divide-gray-200 table-auto">
+                                <thead class="bg-gray-50">
+                                <tr>
+
+                                    <th class="px-4 py-2 text-sm text-left font-serif text-gray-500 uppercase tracking-wider">PATIENT MRNO</th>
+                                    <th class="px-4 py-2 text-sm text-left font-serif text-gray-500 uppercase tracking-wider">NAME</th>
+                                    <th class="px-4 py-2 text-sm text-left font-serif text-gray-500 uppercase tracking-wider">ENTERED BY</th>
+                                    <th class="px-4 py-2 text-sm text-left font-serif text-gray-500 uppercase tracking-wider">ENTERED DATE</th>
+                                    <th class="px-4 py-2 text-sm text-left font-serif text-gray-500 uppercase tracking-wider">CONSULTANT MRNO</th>
+                                    <th class="px-4 py-2 text-sm text-left font-serif text-gray-500 uppercase tracking-wider">RESON FOR CONSULT</th>
+                                    <th class="px-4 py-2 text-sm text-left font-serif text-gray-500 uppercase tracking-wider">DEPARTMENT</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tableBody" class="bg-white divide-y divide-gray-200">
+                                <!-- Table rows will be inserted here -->
+                                </tbody>
+<!--                                <tfoot id="tableFoot" class="bg-gray-50 hidden">-->
+<!--                                <tr>-->
+<!--                                    <th class="px-4 py-2 text-left font-serif text-gray-500 uppercase tracking-wider" colspan="5">Total</th>-->
+<!--                                    <th id="totalADMISSIONS" class="px-4 py-2 text-left font-serif text-gray-500 uppercase tracking-wider"></th>-->
+<!--                                </tr>-->
+<!--                                </tfoot>-->
+                            </table>
+
+
+                    </div>
+                    <div id="graphView" class="mt-6 rounded-md border p-4 hidden">
+                        <canvas id="chartCanvas"></canvas>
+                    </div>
+                    <div id="pagination" class="mt-4 flex justify-center items-center space-x-2 hidden">
+                        <button id="firstPage" class="px-4 py-2 bg-gray-800 text-white rounded-full hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                            First
+                        </button>
+                        <button id="prevPage" class="px-4 py-2 bg-gray-800 text-white rounded-full hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                            Previous
+                        </button>
+                        <span id="pageInfo" class="text-sm font-medium text-gray-700">
+                            Page 1 of 10
+                        </span>
+                        <button id="nextPage" class="px-4 py-2 bg-gray-800 text-white rounded-full hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                            Next
+                        </button>
+                        <button id="lastPage" class="px-4 py-2 bg-gray-800 text-white rounded-full hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                            Last
+                        </button>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </main>
-        </div>
+    </div>
+</div>
+</div>
+</main>
+</div>
+
     <script>
+
 
 
 
         function resetForm() {
             document.getElementById('startDate').value = '';
             document.getElementById('endDate').value = '';
-            document.getElementById('name').value = '';
-            document.getElementById('department').value = '';
-
-
+            document.getElementById('departemnt').value = '';
             departmentData = [];
             currentPage = 1;
             updateTable();
@@ -214,25 +216,31 @@
             }
         }
 
+        // const today = new Date();
+        // const lastThreeDays = new Date(today);
+        // lastThreeDays.setDate(today.getDate() - 3);
+        // const maxDate = lastThreeDays.toISOString().split('T')[0];
+        // document.getElementById('startDate').setAttribute('max', maxDate);
+        // document.getElementById('endDate').setAttribute('max', maxDate);
 
         async function fetchData() {
             const searchButton = document.getElementById('searchButton');
             searchButton.disabled = true;
             searchButton.textContent = 'Search in Progress, Please Wait...';
 
-            const apiUrl = 'https://prod-13.northeurope.logic.azure.com:443/workflows/55990fc11a434b90b7d4093faf062157/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=BjUxLG418U52P1Lvxn8LQwQZIny7J7UlOMpe9wrBSMA';
-
+            const apiUrl = 'https://prod-25.northeurope.logic.azure.com:443/workflows/cfab119c21ef4b53b09ad3ebff539264/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=PKPrDMQKN8sFDwkScR5iDxhW4M0Kc3Syu_TZ7_xGmXg';
             let endDate = document.getElementById('endDate').value;
+
             const endDateObj = new Date(endDate);
             endDateObj.setDate(endDateObj.getDate() + 1);
             endDate = endDateObj.toISOString().split('T')[0];
             const requestBody = {
                 startDate: document.getElementById('startDate').value,
-                endDate: endDate,
-                name: document.getElementById('name').value,
-                department: document.getElementById('department').value,
-            };
+                endDate:endDate,
+               department: document.getElementById('depart').value ,
 
+            };
+    
             try {
                 const response = await fetch(apiUrl, {
                     method: 'POST',
@@ -269,34 +277,41 @@
 
         function updateTable() {
             const tableBody = document.getElementById('tableBody');
-            const tableFoot = document.getElementById('tableFoot');
+            // const tableFoot = document.getElementById('tableFoot');
             tableBody.innerHTML = '';
 
             const startIndex = (currentPage - 1) * itemsPerPage;
             const endIndex = startIndex + itemsPerPage;
             const pageData = departmentData.slice(startIndex, endIndex);
 
-            if (pageData.length === 0) {
-                tableFoot.classList.add('hidden');
-            } else {
-                tableFoot.classList.remove('hidden');
-            }
-
+            // if (pageData.length === 0) {
+            //     tableFoot.classList.add('hidden');
+            // } else {
+            //     tableFoot.classList.remove('hidden');
+            // }
             pageData.forEach(item => {
                 const row = tableBody.insertRow();
+                // Convert the date to a more user-friendly format
+                const enteredDate = new Date(item.ENTERED_DATE);
+                const formattedDate = enteredDate.toLocaleString('en-US', {
+                    dateStyle: 'medium',
+                    timeStyle: 'short'
+                });
+
                 row.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap  font-serif text-gray-500">${item.NAME}</td>
-                    <td class="px-6 py-4 whitespace-nowrap   font-serif text-gray-500">${item.DEPARTMENT}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right  font-serif text-gray-500">${(parseInt(item.NO_OF_PROCEDURES) || 0).toLocaleString()}</td>
-
-
-
-                `;
+        <td class="px-6 py-4 text-sm font-serif text-gray-500">${item.PATIENT_MRNO}</td>
+        <td class="px-6 py-4 text-sm font-serif text-gray-500">${item.NAME}</td>
+        <td class="px-6 py-4 text-sm font-serif text-gray-500">${item.ENTERED_BY}</td>
+        <td class="px-6 py-4 whitespace-nowrap text-left font-serif text-gray-500">${formattedDate}</td>
+        <td class="px-6 py-4 text-sm text-left font-serif text-gray-500">${item.CONSULTANT_MRNO}</td>
+        <td class="px-6 py-4 text-sm text-left font-serif text-gray-500">${item.REASON_FOR_CONSULT}</td>
+        <td class="px-6 py-4 whitespace-nowrap text-left font-serif text-gray-500">${item.DEPARTMENT}</td>
+    `;
             });
 
-            updatePagination();
-            updateTotals();
 
+            updatePagination();
+            // updateTotals();
         }
 
         function updatePagination() {
@@ -314,40 +329,49 @@
             }
         }
 
-        function updateTotals() {
-            const totalPvtOpd = departmentData.reduce((sum, item) => sum + (parseInt(item.NO_OF_PROCEDURES) || 0), 0);
-
-
-            document.getElementById('totalPvtOpd').textContent = totalPvtOpd.toLocaleString();
-
-        }
+        // function updateTotals() {
+        //     const totalADMISSIONS = departmentData.reduce((sum, item) => sum + (parseInt(item.NO_OF_PROCEDURES) || 0), 0);
+        //     document.getElementById('totalADMISSIONS').textContent = totalADMISSIONS.toLocaleString();
+        // }
 
         function changePage(direction) {
             currentPage += direction;
             updateTable();
         }
 
+
         function downloadData() {
             const startDate = document.getElementById('startDate').value;
             const endDate = document.getElementById('endDate').value;
-            const worksheetData = departmentData.map(item => [
-                item.NAME,
-                item.DEPARTMENT,
-                item.NO_OF_PROCEDURES,
+            const worksheetData = departmentData.map(item => {
+
+                const dateTime = item.ENTERED_DATE.split('T');
+                const date = dateTime[0];
+                const time = dateTime[1].split('.')[0]; // Removing any milliseconds if present
+                return [
+                    item.PATIENT_MRNO,
+                    item.NAME,
+                    item.ENTERED_BY,
+                    `${date} ${time}`, // Combining date and time
+                    item.CONSULTANT_MRNO,
+                    item.RESON_FOR_CONSULT,
+                    item.DEPARTMENT
+                ];
+            });
+
+                const worksheet = XLSX.utils.aoa_to_sheet([
+                ['Patient Mrno','Name' ,'Entered BY' , 'Entered Date', 'Consultant MRNO','Reason for Consult' ,'Department' ],
+                ...worksheetData, // Data
             ]);
 
-            const worksheet = XLSX.utils.aoa_to_sheet([
-                ['Doctor Name', 'Department', 'No of Procedures'],
-                ...worksheetData,
-            ]);
-
+            // Create a new workbook and append the worksheet
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, 'Department Data');
 
-            XLSX.writeFile(workbook, `c_section_${startDate}_to_${endDate}.xlsx`);
+            // Save the file as .xlsx
+            XLSX.writeFile(workbook,  `ear-calls-to-consultant_${startDate}_to_${endDate}.xlsx`);
         }
-
-
+        
         function toggleView() {
             const tableView = document.getElementById('tableView');
             const graphView = document.getElementById('graphView');
@@ -371,92 +395,129 @@
         function updateGraph() {
             const ctx = document.getElementById('chartCanvas').getContext('2d');
 
+            // Destroy the previous chart instance if it exists
             if (chart) {
                 chart.destroy();
             }
 
-            if (departmentData.length === 0) {
-                return; // Don't create a chart if there's no data
+            if (!departmentData || departmentData.length === 0) {
+                return; // Do not create a chart if there's no data
             }
 
-            // Group the data by SPECIALITY and sum the PVT_OPD and GEN_OPD values
+            // Group and sum the NO_OF_PROCEDURES by CPT_DESC
             const groupedData = departmentData.reduce((acc, item) => {
-                if (!acc[item.SPECIALITY]) {
-                    acc[item.SPECIALITY] = 0;
-                }
-                acc[item.SPECIALITY] += (parseInt(item.Total_EAR) || 0) ;
+                acc[item.CPT_DESC] = (acc[item.CPT_DESC] || 0) + parseInt(item.NO_OF_PROCEDURES);
                 return acc;
             }, {});
 
-            // Convert the grouped data into an array and sort by total OPD
+            // Convert the grouped data into a sorted array
             const sortedData = Object.entries(groupedData)
-                .map(([speciality, totalOPD]) => ({
-                    SPECIALITY: speciality,
-                    TOTAL_OPD: totalOPD
-                }))
-                .sort((a, b) => b.TOTAL_OPD - a.TOTAL_OPD);
+                .map(([CPT_DESC, NO_OF_PROCEDURES]) => ({ CPT_DESC, NO_OF_PROCEDURES }))
+                .sort((a, b) => b.NO_OF_PROCEDURES - a.NO_OF_PROCEDURES);
 
-            // Create the chart if there is valid data
-            if (sortedData.length > 0) {
-                chart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: sortedData.map(item => item.SPECIALITY), // X-axis labels
-                        datasets: [
-                            {
-                                label: 'Total OPD',
-                                data: sortedData.map(item => item.Total_EAR), // Y-axis data for Total OPD
-                                borderColor: 'rgb(75, 192, 192)',
-                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                borderWidth: 2,
-                                fill: true, // Show area under the line
-                                tension: 0.4 // Smooth the line
-                            }
-                        ]
+            if (sortedData.length === 0) {
+                return; // Do not create a chart if there's no data after processing
+            }
+
+            const labels = sortedData.map(item => item.CPT_DESC);
+            const dataValues = sortedData.map(item => item.NO_OF_PROCEDURES);
+
+            const minValue = Math.min(...dataValues);
+            const maxValue = Math.max(...dataValues);
+            const paddingFactor = 0.1; // Add 10% padding for visual spacing
+            const paddingRange = (maxValue - minValue) * paddingFactor;
+
+            // Create the chart
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels,
+                    datasets: [{
+                        label: 'Number of Procedures',
+                        data: dataValues,
+                        borderColor: 'rgb(75, 192, 192)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.1)',
+                        tension: 0.1,
+                        pointRadius: 5,
+                        pointHoverRadius: 8,
+                        borderWidth: 2,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            top: 20,
+                            right: 20,
+                            bottom: 20,
+                            left: 20
+                        }
                     },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                position: 'top'
-                            },
-                            title: {
-                                display: true,
-                                text: 'Total OPD by Specialty'
-                            },
-                            tooltip: {
-                                enabled: true
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Number of Procedures by CPT Description',
+                            font: {
+                                size: 16
                             }
                         },
-                        scales: {
-                            x: {
-                                ticks: {
-                                    autoSkip: false,
-                                    maxRotation: 90,
-                                    minRotation: 90
-                                },
-                                title: {
-                                    display: true,
-                                    text: 'Specialty'
-                                }
-                            },
-                            y: {
-                                beginAtZero: true,
-                                title: {
-                                    display: true,
-                                    text: 'Total OPD Count'
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `Procedures: ${context.parsed.y}`;
                                 }
                             }
                         },
-                        elements: {
-                            point: {
-                                radius: 5, // Size of data points
-                                hoverRadius: 7 // Size of points on hover
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'top',
+                            offset: 5,
+                            formatter: (value) => value,
+                            font: {
+                                weight: 'bold',
+                                size: 10
+                            },
+                            color: 'rgb(75, 192, 192)'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                autoSkip: true,
+                                maxRotation: 45,
+                                minRotation: 45,
+                                padding: 10
+                            },
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            suggestedMin: Math.max(0, minValue - paddingRange),
+                            suggestedMax: maxValue + paddingRange,
+                            ticks: {
+                                stepSize: Math.ceil((maxValue - minValue) / 10),
+                                padding: 10
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
                             }
                         }
+                    },
+                    elements: {
+                        line: {
+                            tension: 0.3
+                        }
                     }
-                });
-            }
+                },
+                plugins: [ChartDataLabels]
+            });
         }
         // Global variables
         let isOpen = true;
@@ -655,8 +716,6 @@
 
 
     </script>
-
-
 
 
 </body>
